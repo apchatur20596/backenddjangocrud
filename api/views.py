@@ -14,7 +14,7 @@ def apiOverview(request):
         'List' : '/readAllEmp',
         'Read' : 'readEmp/<str:pk>/',
         'Create' : '/createEmp/',
-        'Update' : 'task-update/<str:pk>/',
+        'Update' : 'updateEmp/<str:pk>/',
         'Delete' : '/task-delete/<str:pk>/',
     }
 
@@ -40,5 +40,16 @@ def readAllEmp(request):
 def readEmployee(request, pk):
     tasks = Task.objects.get(id=pk)
     serializer = TaskSerializer(tasks, many=False)
+    return Response(serializer.data)
+
+
+@api_view(['POST'])
+def updateEmp(request, pk):
+    task = Task.objects.get(id=pk)
+    serializer = TaskSerializer(instance=task ,data=request.data)
+
+    if serializer.is_valid():
+        serializer.save()
+
     return Response(serializer.data)
 
