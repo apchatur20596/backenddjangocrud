@@ -15,7 +15,7 @@ def apiOverview(request):
         'Read' : 'readEmp/<str:pk>/',
         'Create' : '/createEmp/',
         'Update' : 'updateEmp/<str:pk>/',
-        'Delete' : '/task-delete/<str:pk>/',
+        'Delete' : '/deleteEmp/<str:pk>/',
     }
 
     return Response(api_urls)
@@ -53,3 +53,9 @@ def updateEmp(request, pk):
 
     return Response(serializer.data)
 
+@api_view(['DELETE'])
+def deleteEmp(request, pk):
+    task = Task.objects.get(id=pk)
+    print(task.delete())
+
+    return Response(True);
